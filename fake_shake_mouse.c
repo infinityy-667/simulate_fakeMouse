@@ -7,6 +7,7 @@
 #include <libevdev/libevdev-uinput.h> 
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 int main(){
@@ -16,13 +17,13 @@ int main(){
 
    //init
     dev =libevdev_new();
-    libevdev_set_name(dev, "fyf_fakeMouse");
+    libevdev_set_name(dev, "USB fyf_fakeMouse");
     libevdev_enable_event_type(dev, EV_REL);
     libevdev_enable_event_code(dev, EV_REL, REL_X, NULL);
     libevdev_enable_event_code(dev, EV_REL, REL_Y, NULL);
     //simnulate left key
     libevdev_enable_event_type(dev, EV_KEY);
-    libevdev_disable_event_code(dev, EV_KEY, BTN_LEFT);
+    libevdev_enable_event_code(dev, EV_KEY, BTN_LEFT, NULL);
 
     libevdev_enable_event_type(dev, EV_SYN);
     libevdev_enable_event_code(dev, EV_SYN, SYN_REPORT, NULL);
@@ -35,6 +36,8 @@ int main(){
         return -1;
     }
 
+
+    srand(time(NULL));
     while (1){
         int direction = rand() % 2 ==0 ? REL_X : REL_Y;
         int amplitude = rand() % 41 - 20;
